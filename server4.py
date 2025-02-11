@@ -4,11 +4,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-
-# Define your sender and receiver email
+# Define sender and receiver email
 EMAIL = "smsslg.saraswati@gmail.com"  # Replace with your email
 PASSWORD = "qpls kljk cdte npag"  # Use an app password, not your normal password
-TO_EMAIL = "smgslgadmission@gmail.com"  # Recipient email
+TO_EMAIL = "felixfurtado809@gmail.com"  # Recipient email
 
 app = Flask(__name__)
 CORS(app, resources={r"/send-email": {"origins": "*"}})  # Allow requests from any origin
@@ -20,23 +19,31 @@ def send_email():
         fname = data.get("fname", "").strip()
         lname = data.get("lname", "").strip()
         email = data.get("email", "").strip()
-        phone = data.get("phone", "").strip()
-        dob = data.get("dob", "").strip()
-        gender = data.get("gender", "").strip()
+        phone = data.get("Phone", "").strip()
+        address = data.get("address", "").strip()
+        city = data.get("city", "").strip()
+        country = data.get("country", "").strip()
+        zip_code = data.get("zip", "").strip()
+        datepicker = data.get("data", "").strip()
+        message = data.get("msg", "").strip()
 
         if not fname or not email:
             return jsonify({"error": "First Name and Email are required!"}), 400
 
         subject = "New Form Submission"
         body = f"""
-        You have a new form submission:
+        You have received a new form submission:
 
         First Name: {fname}
         Last Name: {lname}
         Email: {email}
         Phone: {phone}
-        Date of Birth: {dob}
-        Gender: {gender}
+        Address: {address}
+        City: {city}
+        Country: {country}
+        Zip Code: {zip_code}
+        Selected Date: {datepicker}
+        Message: {message}
         """
 
         msg = MIMEMultipart()
@@ -46,7 +53,6 @@ def send_email():
         msg.attach(MIMEText(body, "plain"))
 
         try:
-            # Connect to Gmail's SMTP server
             server = smtplib.SMTP("smtp.gmail.com", 587)
             server.starttls()
             server.login(EMAIL, PASSWORD)
@@ -68,7 +74,3 @@ def send_email():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5051)
-
-
-
- 
